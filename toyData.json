@@ -1,0 +1,68 @@
+[
+  {
+    "toyName": "Cinderella",
+    "toyPictureURL": "https://example.com/super_robot.jpg",
+    "price": 29.99,
+    "rating": 4.5,
+    "sellerName": "Toy World",
+    "sellerEmail": "toys@toyworld.com",
+    "toySubCategory": "Princess Dolls",
+    "quantity": 10,
+    "toyDescription": "A cool action figure of a powerful robot."
+  },
+  {
+    "toyName": "Ariel",
+    "toyPictureURL": "https://example.com/princess_castle.jpg",
+    "price": 49.99,
+    "rating": 4.2,
+    "sellerName": "Magical Toys",
+    "sellerEmail": "sales@magicaltoys.com",
+    "toySubCategory": "Princess Dolls",
+    "quantity": 5,
+    "toyDescription": "A beautiful castle playset for little princesses."
+  },
+  {
+    "toyName": "Moana",
+    "toyPictureURL": "https://example.com/dinosaur_puzzle.jpg",
+    "price": 12.99,
+    "rating": 4.7,
+    "sellerName": "Puzzle Planet",
+    "sellerEmail": "info@puzzleplanet.com",
+    "toySubCategory": "Adventure Dolls",
+    "quantity": 8,
+    "toyDescription": "A fun puzzle featuring different dinosaur species."
+  },
+  {
+    "toyName": "Elsa",
+    "toyPictureURL": "https://example.com/rc_car.jpg",
+    "price": 39.99,
+    "rating": 4.0,
+    "sellerName": "Speedy Toys",
+    "sellerEmail": "sales@speedytoys.com",
+    "toySubCategory": "Adventure Dolls",
+    "quantity": 12,
+    "toyDescription": "A fast and maneuverable remote control car."
+  },
+  {
+    "toyName": "Mickey Mouse",
+    "toyPictureURL": "https://example.com/teddy_bear.jpg",
+    "price": 19.99,
+    "rating": 4.8,
+    "sellerName": "Cuddly Creations",
+    "sellerEmail": "support@cuddlycreations.com",
+    "toySubCategory": "Classic Disney Dolls",
+    "quantity": 15,
+    "toyDescription": "A soft and huggable teddy bear companion."
+  },
+  {
+    "toyName": "Donald Duck",
+    "toyPictureURL": "https://example.com/construction_set.jpg",
+    "price": 34.99,
+    "rating": 4.3,
+    "sellerName": "Build It Up",
+    "sellerEmail": "info@builditup.com",
+    "toySubCategory": "Classic Disney Dolls",
+    "quantity": 3,
+    "toyDescription": "A set of blocks for building various structures."
+  }
+]
