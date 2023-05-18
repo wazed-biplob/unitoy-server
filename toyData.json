@@ -1,7 +1,7 @@
 [
   {
     "toyName": "Cinderella",
-    "toyPictureURL": "https://example.com/super_robot.jpg",
+    "toyPictureURL": "https://i.ibb.co/HhxG5W5/Cind.jpg",
     "price": 29.99,
     "rating": 4.5,
     "sellerName": "Toy World",
@@ -12,7 +12,7 @@
   },
   {
     "toyName": "Ariel",
-    "toyPictureURL": "https://example.com/princess_castle.jpg",
+    "toyPictureURL": "https://i.ibb.co/9hdRFfT/Ariel.jpg",
     "price": 49.99,
     "rating": 4.2,
     "sellerName": "Magical Toys",
@@ -23,7 +23,7 @@
   },
   {
     "toyName": "Moana",
-    "toyPictureURL": "https://example.com/dinosaur_puzzle.jpg",
+    "toyPictureURL": "https://i.ibb.co/ZWC0YKq/Moana.jpg",
     "price": 12.99,
     "rating": 4.7,
     "sellerName": "Puzzle Planet",
@@ -34,7 +34,7 @@
   },
   {
     "toyName": "Elsa",
-    "toyPictureURL": "https://example.com/rc_car.jpg",
+    "toyPictureURL": "https://i.ibb.co/GnYv1D6/Elsa.jpg",
     "price": 39.99,
     "rating": 4.0,
     "sellerName": "Speedy Toys",
@@ -45,7 +45,7 @@
   },
   {
     "toyName": "Mickey Mouse",
-    "toyPictureURL": "https://example.com/teddy_bear.jpg",
+    "toyPictureURL": "https://i.ibb.co/sqNVsfH/Micky.jpg",
     "price": 19.99,
     "rating": 4.8,
     "sellerName": "Cuddly Creations",
@@ -56,7 +56,7 @@
   },
   {
     "toyName": "Donald Duck",
-    "toyPictureURL": "https://example.com/construction_set.jpg",
+    "toyPictureURL": "https://i.ibb.co/7njh3GT/Donald-Duck.jpg",
     "price": 34.99,
     "rating": 4.3,
     "sellerName": "Build It Up",
