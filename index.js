@@ -2,9 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const port = process.env.PORT || 5000;
 
-//
-//
-
 const app = express();
 
 app.use(express.json());
@@ -12,7 +9,7 @@ app.use(cors());
 
 const data = require("./toyData.json");
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri =
   "mongodb+srv://unitoy:S3oiPff2aQtd33VV@cluster0.dp2hutp.mongodb.net/?retryWrites=true&w=majority";
 
@@ -31,8 +28,30 @@ async function run() {
     await client.connect();
     const toyCollection = client.db("unitoy").collection("toydata");
     app.get("/toydata", async (req, res) => {
-      const cursor = toyCollection.find();
-      const result = await cursor.toArray();
+      let query = {};
+      if (req.query?.email) {
+        query = { sellerEmail: req.query.email };
+        console.log(query, "ok");
+        const result = await toyCollection.find(query).toArray();
+        res.send(result);
+      } else {
+        const cursor = toyCollection.find();
+        const result = await cursor.toArray();
+        res.send(result);
+      }
+    });
+
+    app.get("/singletoy/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await toyCollection.findOne(query);
+      res.send(result);
+    });
+
+    app.post("/toydata", async (req, res) => {
+      const addedToy = req.body;
+      console.log(addedToy);
+      const result = await toyCollection.insertOne(addedToy);
       res.send(result);
     });
     // Send a ping to confirm a successful connection
