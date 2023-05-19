@@ -31,7 +31,7 @@ async function run() {
       let query = {};
       if (req.query?.email) {
         query = { sellerEmail: req.query.email };
-        console.log(query, "ok");
+
         const result = await toyCollection.find(query).toArray();
         res.send(result);
       } else {
@@ -52,6 +52,19 @@ async function run() {
       const addedToy = req.body;
       console.log(addedToy);
       const result = await toyCollection.insertOne(addedToy);
+      res.send(result);
+    });
+
+    app.patch("/singletoy/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      console.log(id, filter);
+      const updatedToy = req.body;
+      console.log(updatedToy);
+      const updatedDoc = {
+        $set: updatedToy,
+      };
+      const result = await toyCollection.updateOne(filter, updatedDoc);
       res.send(result);
     });
     // Send a ping to confirm a successful connection
