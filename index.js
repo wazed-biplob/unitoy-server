@@ -31,15 +31,30 @@ async function run() {
       let query = {};
       if (req.query?.email) {
         query = { sellerEmail: req.query.email };
-
         const result = await toyCollection.find(query).toArray();
         res.send(result);
+      } else if (req.query?.search) {
+        console.log(req.query.search);
+        const query = { $text: { $search: req.query.search } };
+        // Return only the `title` of each matched document
+        const projection = {
+          _id: 0,
+          toyName: 1,
+        };
+        // find documents based on our query and projection
+        const cursor = toyCollection.find(query);
+        const result = await cursor.toArray();
+        res.send(result);
       } else {
-        const cursor = toyCollection.find();
+        const limit = parseInt(req.query?.limit);
+        console.log("limit", limit);
+        const cursor = toyCollection.find().limit(limit);
         const result = await cursor.toArray();
         res.send(result);
       }
     });
+
+    // const results = await MyModel.find({ $text: { $search: "text
 
     app.get("/singletoy/:id", async (req, res) => {
       const id = req.params.id;
@@ -50,7 +65,7 @@ async function run() {
 
     app.post("/toydata", async (req, res) => {
       const addedToy = req.body;
-      console.log(addedToy);
+
       const result = await toyCollection.insertOne(addedToy);
       res.send(result);
     });
@@ -58,15 +73,23 @@ async function run() {
     app.patch("/singletoy/:id", async (req, res) => {
       const id = req.params.id;
       const filter = { _id: new ObjectId(id) };
-      console.log(id, filter);
+
       const updatedToy = req.body;
-      console.log(updatedToy);
+
       const updatedDoc = {
         $set: updatedToy,
       };
       const result = await toyCollection.updateOne(filter, updatedDoc);
       res.send(result);
     });
+
+    app.delete("/singletoy/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await toyCollection.deleteOne(query);
+      res.send(result);
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
