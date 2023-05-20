@@ -41,12 +41,30 @@ async function run() {
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-  res.send("UniToy Server Running OK!");
+  res.send("UniToy Server is Running Ok.");
 });
 
 app.get("/toydata", async (req, res) => {
   let query = {};
-  if (req.query?.email) {
+  if (req.query?.email && req.query?.sort) {
+    let cursor;
+
+    if (req.query.sort == "true") {
+      console.log("value", req.query.sort);
+      cursor = toyCollection.aggregate([
+        { $match: { sellerEmail: req.query.email } },
+        { $sort: { price: 1 } },
+      ]);
+    } else {
+      console.log("2nd value", req.query.sort);
+      cursor = toyCollection.aggregate([
+        { $match: { sellerEmail: req.query.email } },
+        { $sort: { price: -1 } },
+      ]);
+    }
+    const result = await cursor.toArray();
+    res.send(result);
+  } else if (req.query?.email) {
     query = { sellerEmail: req.query.email };
     const result = await toyCollection.find(query).toArray();
     res.send(result);
@@ -58,17 +76,8 @@ app.get("/toydata", async (req, res) => {
     const cursor = toyCollection.find(query);
     const result = await cursor.toArray();
     res.send(result);
-  } else if (req.query?.sort) {
-    let sort = req.query.sort;
-    if (sort == true) {
-      let sort = { price: -1 };
-      const cursor = toyCollection.find(query).sort(sort);
-      const result = await cursor.toArray();
-      res.send(result);
-    }
   } else {
     const limit = parseInt(req.query?.limit);
-
     const cursor = toyCollection.find().limit(limit);
     const result = await cursor.toArray();
     res.send(result);
