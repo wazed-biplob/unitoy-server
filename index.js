@@ -7,11 +7,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const data = require("./toyData.json");
+require("dotenv").config();
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
-const uri =
-  "mongodb+srv://unitoy:S3oiPff2aQtd33VV@cluster0.dp2hutp.mongodb.net/?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.dp2hutp.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -21,74 +20,13 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
 });
-
+const toyCollection = client.db("unitoy").collection("toydata");
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-    const toyCollection = client.db("unitoy").collection("toydata");
-    app.get("/toydata", async (req, res) => {
-      let query = {};
-      if (req.query?.email) {
-        query = { sellerEmail: req.query.email };
-        const result = await toyCollection.find(query).toArray();
-        res.send(result);
-      } else if (req.query?.search) {
-        console.log(req.query.search);
-        const query = { $text: { $search: req.query.search } };
-        // Return only the `title` of each matched document
-        const projection = {
-          _id: 0,
-          toyName: 1,
-        };
-        // find documents based on our query and projection
-        const cursor = toyCollection.find(query);
-        const result = await cursor.toArray();
-        res.send(result);
-      } else {
-        const limit = parseInt(req.query?.limit);
-        console.log("limit", limit);
-        const cursor = toyCollection.find().limit(limit);
-        const result = await cursor.toArray();
-        res.send(result);
-      }
-    });
 
     // const results = await MyModel.find({ $text: { $search: "text
-
-    app.get("/singletoy/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: new ObjectId(id) };
-      const result = await toyCollection.findOne(query);
-      res.send(result);
-    });
-
-    app.post("/toydata", async (req, res) => {
-      const addedToy = req.body;
-
-      const result = await toyCollection.insertOne(addedToy);
-      res.send(result);
-    });
-
-    app.patch("/singletoy/:id", async (req, res) => {
-      const id = req.params.id;
-      const filter = { _id: new ObjectId(id) };
-
-      const updatedToy = req.body;
-
-      const updatedDoc = {
-        $set: updatedToy,
-      };
-      const result = await toyCollection.updateOne(filter, updatedDoc);
-      res.send(result);
-    });
-
-    app.delete("/singletoy/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: new ObjectId(id) };
-      const result = await toyCollection.deleteOne(query);
-      res.send(result);
-    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
@@ -100,10 +38,78 @@ async function run() {
     // await client.close();
   }
 }
+
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
   res.send("UniToy Server Running.");
+});
+
+app.get("/toydata", async (req, res) => {
+  let query = {};
+  if (req.query?.email) {
+    query = { sellerEmail: req.query.email };
+    const result = await toyCollection.find(query).toArray();
+    res.send(result);
+  } else if (req.query?.search) {
+    console.log(req.query.search);
+
+    const query = { toyName: req.query.search };
+    // Return only the `title` of each matched document
+
+    // find documents based on our query and projection
+    const cursor = toyCollection.find(query);
+    const result = await cursor.toArray();
+    res.send(result);
+  } else if (req.query?.sort) {
+    let sort = req.query.sort;
+    if (sort == true) {
+      let sort = { price: -1 };
+      const cursor = toyCollection.find(query).sort(sort);
+      const result = await cursor.toArray();
+      res.send(result);
+    }
+  } else {
+    const limit = parseInt(req.query?.limit);
+
+    const cursor = toyCollection.find().limit(limit);
+    const result = await cursor.toArray();
+    res.send(result);
+  }
+});
+
+app.get("/singletoy/:id", async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: new ObjectId(id) };
+  const result = await toyCollection.findOne(query);
+  res.send(result);
+});
+
+app.post("/toydata", async (req, res) => {
+  const addedToy = req.body;
+
+  const result = await toyCollection.insertOne(addedToy);
+  res.send(result);
+});
+
+app.patch("/singletoy/:id", async (req, res) => {
+  const id = req.params.id;
+  const filter = { _id: new ObjectId(id) };
+
+  const updatedToy = req.body;
+
+  const updatedDoc = {
+    $set: updatedToy,
+  };
+  const result = await toyCollection.updateOne(filter, updatedDoc);
+  res.send(result);
+});
+
+app.delete("/singletoy/:id", async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: new ObjectId(id) };
+  const result = await toyCollection.deleteOne(query);
+  res.send(result);
 });
 
 app.listen(port, () => {
