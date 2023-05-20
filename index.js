@@ -41,7 +41,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-  res.send("UniToy Server Running.");
+  res.send("UniToy Server Running OK!");
 });
 
 app.get("/toydata", async (req, res) => {
