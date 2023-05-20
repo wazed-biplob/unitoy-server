@@ -25,7 +25,6 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-
     // const results = await MyModel.find({ $text: { $search: "text
 
     // Send a ping to confirm a successful connection
@@ -55,9 +54,7 @@ app.get("/toydata", async (req, res) => {
     console.log(req.query.search);
 
     const query = { toyName: req.query.search };
-    // Return only the `title` of each matched document
 
-    // find documents based on our query and projection
     const cursor = toyCollection.find(query);
     const result = await cursor.toArray();
     res.send(result);
