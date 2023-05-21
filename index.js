@@ -24,7 +24,7 @@ const toyCollection = client.db("unitoy").collection("toydata");
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
     // const results = await MyModel.find({ $text: { $search: "text
 
     // Send a ping to confirm a successful connection
@@ -50,17 +50,28 @@ app.get("/toydata", async (req, res) => {
     let cursor;
 
     if (req.query.sort == "true") {
-      console.log("value", req.query.sort);
-      cursor = toyCollection.aggregate([
-        { $match: { sellerEmail: req.query.email } },
-        { $sort: { price: 1 } },
-      ]);
+      cursor = toyCollection.aggregate(
+        [{ $match: { sellerEmail: req.query.email } }, { $sort: { price: 1 } }],
+        {
+          collation: {
+            locale: "en_US",
+            numericOrdering: true,
+          },
+        }
+      );
     } else {
-      console.log("2nd value", req.query.sort);
-      cursor = toyCollection.aggregate([
-        { $match: { sellerEmail: req.query.email } },
-        { $sort: { price: -1 } },
-      ]);
+      cursor = toyCollection.aggregate(
+        [
+          { $match: { sellerEmail: req.query.email } },
+          { $sort: { price: -1 } },
+        ],
+        {
+          collation: {
+            locale: "en_US",
+            numericOrdering: true,
+          },
+        }
+      );
     }
     const result = await cursor.toArray();
     res.send(result);
